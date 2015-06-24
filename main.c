@@ -1,14 +1,9 @@
 /*
-* @file main.c
-* 
-* @brief Real Time Clock Calendar for NUCLEO STM32F401 with DS1307
-*
-* author Theodore ATEBA
-*
+* @file     main.c 
+* @brief    Real Time Clock Calendar for NUCLEO STM32F401 with DS1307
+* @author   Theodore ATEBA
 * @version  1.0
-*
-* @date 21 June 2015
-*
+* @date     21 June 2015
 */
 
 //=============================================================================
@@ -228,16 +223,44 @@ static struct ds1307_t getDs1307Date ( msg_t *status, systime_t *tmo )
     return dsData;
 }
 
-
-/*
-* @fn       int main(void)
-* @brief    Application entry point.
-*/
-int main(void) 
+// RTC reader thread
+static THD_WORKING_AREA ( waRtcReadThread, 128 );
+static THD_FUNCTION ( RtcReadThread, arg )
 {
     msg_t status = MSG_OK;
-    systime_t tmo = MS2ST ( 4 );
+    systime_t timeOut = MS2ST ( 4 );
 
+    (  void )arg;
+    chRegSetThreadName ( "RTC reader" );
+    while ( TRUE )
+    {
+        calendar = getDs1307Date ( &status, &timeOut );
+        chThdSleepMilliseconds( 800 );
+    }
+    return 0;
+}
+
+// RTC printer thread
+static THD_WORKING_AREA ( waRtcPrintThread, 128 );
+static THD_FUNCTION ( RtcPrintThread, arg )
+{
+    ( void )arg;
+    chRegSetThreadName ( "RTC printer" );
+    while ( TRUE )
+    {
+        ds1307Print ( calendar );
+        chThdSleepMilliseconds ( 1000 );
+    }
+    return 0;
+}
+
+
+/*
+* @fn       int main (void)
+* @brief    Application entry point.
+*/
+int main (void) 
+{
     // System initializations.
     halInit ();
     chSysInit ();
@@ -260,14 +283,16 @@ int main(void)
     calendar.year       = 2015;
     //setDs1307Date(&status, &tmo, calendar);
 
+    // Create the thread used to read the RTC DS1307
+    chThdCreateStatic(waRtcReadThread, sizeof(waRtcReadThread), NORMALPRIO, 
+    RtcReadThread, NULL);
+    
+    // Create the thread used to print the RTC data every seconds
+    chThdCreateStatic(waRtcPrintThread, sizeof(waRtcPrintThread), NORMALPRIO, 
+    RtcPrintThread, NULL);
+    
     while (1)
     {
-        chThdSleepMilliseconds ( 1000 );
-
-        // Read RTC Clock and Calendar
-        calendar = getDs1307Date ( &status, &tmo );
-        
-        // Print the RTC Clock and Calendar
-        ds1307Print ( calendar );
+        chThdSleepMilliseconds (1);
     }
 }
