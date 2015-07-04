@@ -1,5 +1,5 @@
 /*
-    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio
+    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -29,6 +29,13 @@
 #define _HALCONF_H_
 
 #include "mcuconf.h"
+
+/**
+ * @brief   Enables the TM subsystem.
+ */
+#if !defined(HAL_USE_TM) || defined(__DOXYGEN__)
+#define HAL_USE_TM                  FALSE
+#endif
 
 /**
  * @brief   Enables the PAL subsystem.
@@ -70,13 +77,6 @@
  */
 #if !defined(HAL_USE_I2C) || defined(__DOXYGEN__)
 #define HAL_USE_I2C                 TRUE
-#endif
-
-/**
- * @brief   Enables the I2S subsystem.
- */
-#if !defined(HAL_USE_I2S) || defined(__DOXYGEN__)
-#define HAL_USE_I2S                 FALSE
 #endif
 
 /**
@@ -165,7 +165,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(ADC_USE_WAIT) || defined(__DOXYGEN__)
-#define ADC_USE_WAIT                TRUE
+#define ADC_USE_WAIT                FALSE
 #endif
 
 /**
@@ -173,7 +173,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(ADC_USE_MUTUAL_EXCLUSION) || defined(__DOXYGEN__)
-#define ADC_USE_MUTUAL_EXCLUSION    TRUE
+#define ADC_USE_MUTUAL_EXCLUSION    FALSE
 #endif
 
 /*===========================================================================*/
@@ -184,7 +184,7 @@
  * @brief   Sleep mode related APIs inclusion switch.
  */
 #if !defined(CAN_USE_SLEEP_MODE) || defined(__DOXYGEN__)
-#define CAN_USE_SLEEP_MODE          TRUE
+#define CAN_USE_SLEEP_MODE          FALSE
 #endif
 
 /*===========================================================================*/
@@ -213,7 +213,7 @@
  * @brief   Enables an event sources for incoming packets.
  */
 #if !defined(MAC_USE_EVENTS) || defined(__DOXYGEN__)
-#define MAC_USE_EVENTS              TRUE
+#define MAC_USE_EVENTS              FALSE
 #endif
 
 /*===========================================================================*/
@@ -229,7 +229,7 @@
  *          use a DMA channel and heavily loads the CPU.
  */
 #if !defined(MMC_NICE_WAITING) || defined(__DOXYGEN__)
-#define MMC_NICE_WAITING            TRUE
+#define MMC_NICE_WAITING            FALSE
 #endif
 
 /*===========================================================================*/
@@ -260,7 +260,7 @@
  *          lower priority, this may slow down the driver a bit however.
  */
 #if !defined(SDC_NICE_WAITING) || defined(__DOXYGEN__)
-#define SDC_NICE_WAITING            TRUE
+#define SDC_NICE_WAITING            FALSE
 #endif
 
 /*===========================================================================*/
@@ -273,7 +273,7 @@
  *          default configuration.
  */
 #if !defined(SERIAL_DEFAULT_BITRATE) || defined(__DOXYGEN__)
-#define SERIAL_DEFAULT_BITRATE      38400
+#define SERIAL_DEFAULT_BITRATE      115200
 #endif
 
 /**
@@ -288,21 +288,6 @@
 #endif
 
 /*===========================================================================*/
-/* SERIAL_USB driver related setting.                                        */
-/*===========================================================================*/
-
-/**
- * @brief   Serial over USB buffers size.
- * @details Configuration parameter, the buffer size must be a multiple of
- *          the USB data endpoint maximum packet size.
- * @note    The default is 64 bytes for both the transmission and receive
- *          buffers.
- */
-#if !defined(SERIAL_USB_BUFFERS_SIZE) || defined(__DOXYGEN__)
-#define SERIAL_USB_BUFFERS_SIZE     256
-#endif
-
-/*===========================================================================*/
 /* SPI driver related settings.                                              */
 /*===========================================================================*/
 
@@ -311,7 +296,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(SPI_USE_WAIT) || defined(__DOXYGEN__)
-#define SPI_USE_WAIT                TRUE
+#define SPI_USE_WAIT                FALSE
 #endif
 
 /**
@@ -319,7 +304,7 @@
  * @note    Disabling this option saves both code and data space.
  */
 #if !defined(SPI_USE_MUTUAL_EXCLUSION) || defined(__DOXYGEN__)
-#define SPI_USE_MUTUAL_EXCLUSION    TRUE
+#define SPI_USE_MUTUAL_EXCLUSION    FALSE
 #endif
 
 #endif /* _HALCONF_H_ */

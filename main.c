@@ -9,9 +9,9 @@
 //=============================================================================
 // Include Files
 //=============================================================================
+    #include <stdlib.h>
     #include "ch.h"
     #include "hal.h"
-    #include <stdlib.h>
     #include "dslib.h"
 
 //=============================================================================
@@ -27,13 +27,13 @@
 
 
 // RTC reader thread
-static THD_WORKING_AREA ( waRtcReadThread, 128 );
-static THD_FUNCTION ( RtcReadThread, arg )
+static WORKING_AREA ( waRtcReadThread, 128 );
+static msg_t RtcReadThread (void *arg)
 {
-    msg_t status = MSG_OK;
+    msg_t status = RDY_OK;
     systime_t timeOut = MS2ST ( 4 );
 
-    (  void )arg;
+    (void)arg;
     chRegSetThreadName ( "RTC reader" );
     while ( TRUE )
     {
@@ -44,10 +44,10 @@ static THD_FUNCTION ( RtcReadThread, arg )
 }
 
 // RTC printer thread
-static THD_WORKING_AREA ( waRtcPrintThread, 128 );
-static THD_FUNCTION ( RtcPrintThread, arg )
+static WORKING_AREA ( waRtcPrintThread, 128 );
+static msg_t RtcPrintThread (void *arg)
 {
-    ( void )arg;
+    (void)arg;
     chRegSetThreadName ( "RTC printer" );
     while ( TRUE )
     {
@@ -64,9 +64,6 @@ static THD_FUNCTION ( RtcPrintThread, arg )
 */
 int main (void) 
 {
-    //msg_t status;
-    //systime_t tmo = MS2ST(4);
-
     // System initializations.
     halInit ();
     chSysInit ();
@@ -75,7 +72,8 @@ int main (void)
     ds1307InterfaceInit ();
         
     // init the serial Driver
-    serialDriver2Init ();
+    //serialDriver2Init ();
+     sdStart(&SD2, NULL);
         
     print("\n\r Chibios Real Time Clock calendar with Nucleo and DS1307.\n\r");
     

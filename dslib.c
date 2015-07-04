@@ -139,10 +139,10 @@ void setDs1307Date ( msg_t *status, systime_t *tmo, struct ds1307_t dsData )
                 DS1307_TX_DEPTH, rxbuf, 0, *tmo );
     i2cReleaseBus ( &I2CD1 );
 
-    if ( *status != MSG_OK )
-        print ("\n Error when setting the DS1307 date over the I2C bus\n");
+    if ( *status != RDY_OK )
+        print ("\n\r Error when setting the DS1307 date over the I2C bus.");
     else
-        print ("\n DS1307 was setting succefuly.\n\r");
+        print ("\n\r DS1307 was setting succefuly.");
 }
 
 /*
@@ -152,6 +152,7 @@ void setDs1307Date ( msg_t *status, systime_t *tmo, struct ds1307_t dsData )
 */
 void ds1307Print ( struct ds1307_t dsData )
 {
+    print ("\n\r");
     printn ( dsData.date ); // The year reference is 2OOO for me :-)
     print ("/");
     printn ( dsData.month );
@@ -164,7 +165,6 @@ void ds1307Print ( struct ds1307_t dsData )
     printn ( dsData.minutes );
     print (":");
     printn ( dsData.seconds );
-    print("\n\r");
 }
 
 /*
@@ -184,10 +184,10 @@ struct ds1307_t getDs1307Date ( msg_t *status, systime_t *tmo )
                 rxbuf, 7, *tmo );
     i2cReleaseBus ( &I2CD1 );
 
-    if ( *status != MSG_OK )
+    if ( *status != RDY_OK )
     {
         errors = i2cGetErrors ( &I2CD1 );
-        print("\n I2C transmission error!\n\r");
+        print("\n\r I2C transmission error!");
     }
     else
     {    

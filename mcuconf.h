@@ -1,5 +1,5 @@
 /*
-    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio
+    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -13,9 +13,6 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-
-#ifndef _MCUCONF_H_
-#define _MCUCONF_H_
 
 /*
  * STM32F4xx drivers configuration.
@@ -87,7 +84,7 @@
 #define STM32_EXT_EXTI16_IRQ_PRIORITY       6
 #define STM32_EXT_EXTI17_IRQ_PRIORITY       15
 #define STM32_EXT_EXTI18_IRQ_PRIORITY       6
-#define STM32_EXT_EXTI19_IRQ_PRIORITY       6
+#define STM32_EXT_EXTI21_IRQ_PRIORITY       6
 #define STM32_EXT_EXTI22_IRQ_PRIORITY       15
 
 /*
@@ -112,9 +109,8 @@
  * I2C driver system settings.
  */
 #define STM32_I2C_USE_I2C1                  TRUE
-#define STM32_I2C_USE_I2C2                  TRUE
-#define STM32_I2C_USE_I2C3                  TRUE
-#define STM32_I2C_BUSY_TIMEOUT              50
+#define STM32_I2C_USE_I2C2                  FALSE
+#define STM32_I2C_USE_I2C3                  FALSE
 #define STM32_I2C_I2C1_RX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 0)
 #define STM32_I2C_I2C1_TX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 6)
 #define STM32_I2C_I2C2_RX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 2)
@@ -127,7 +123,9 @@
 #define STM32_I2C_I2C1_DMA_PRIORITY         3
 #define STM32_I2C_I2C2_DMA_PRIORITY         3
 #define STM32_I2C_I2C3_DMA_PRIORITY         3
-#define STM32_I2C_DMA_ERROR_HOOK(i2cp)      osalSysHalt("DMA failure")
+#define STM32_I2C_I2C1_DMA_ERROR_HOOK()     chSysHalt()
+#define STM32_I2C_I2C2_DMA_ERROR_HOOK()     chSysHalt()
+#define STM32_I2C_I2C3_DMA_ERROR_HOOK()     chSysHalt()
 
 /*
  * ICU driver system settings.
@@ -175,8 +173,8 @@
 /*
  * SPI driver system settings.
  */
-#define STM32_SPI_USE_SPI1                  TRUE
-#define STM32_SPI_USE_SPI2                  TRUE
+#define STM32_SPI_USE_SPI1                  FALSE
+#define STM32_SPI_USE_SPI2                  FALSE
 #define STM32_SPI_USE_SPI3                  FALSE
 #define STM32_SPI_SPI1_RX_DMA_STREAM        STM32_DMA_STREAM_ID(2, 0)
 #define STM32_SPI_SPI1_TX_DMA_STREAM        STM32_DMA_STREAM_ID(2, 3)
@@ -190,13 +188,7 @@
 #define STM32_SPI_SPI1_IRQ_PRIORITY         10
 #define STM32_SPI_SPI2_IRQ_PRIORITY         10
 #define STM32_SPI_SPI3_IRQ_PRIORITY         10
-#define STM32_SPI_DMA_ERROR_HOOK(spip)      osalSysHalt("DMA failure")
-
-/*
- * ST driver system settings.
- */
-#define STM32_ST_IRQ_PRIORITY               8
-#define STM32_ST_USE_TIMER                  2
+#define STM32_SPI_DMA_ERROR_HOOK(spip)      chSysHalt()
 
 /*
  * UART driver system settings.
@@ -216,7 +208,7 @@
 #define STM32_UART_USART1_DMA_PRIORITY      0
 #define STM32_UART_USART2_DMA_PRIORITY      0
 #define STM32_UART_USART6_DMA_PRIORITY      0
-#define STM32_UART_DMA_ERROR_HOOK(uartp)    osalSysHalt("DMA failure")
+#define STM32_UART_DMA_ERROR_HOOK(uartp)    chSysHalt()
 
 /*
  * USB driver system settings.
@@ -227,5 +219,3 @@
 #define STM32_USB_OTG_THREAD_PRIO           LOWPRIO
 #define STM32_USB_OTG_THREAD_STACK_SIZE     128
 #define STM32_USB_OTGFIFO_FILL_BASEPRI      0
-
-#endif /* _MCUCONF_H_ */
